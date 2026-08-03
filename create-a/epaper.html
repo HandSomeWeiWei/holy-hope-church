@@ -16,8 +16,9 @@
   <header class="top"><nav class="nav wrap"><a class="brand" href="index.html"><img class="mark" src="assets/church-logo.png" alt="聖望教會 Logo">聖望教會</a><a class="back" href="index.html">← 回到首頁</a></nav></header>
   <section class="hero"><div class="wrap"><div class="eyebrow">CHURCH NEWS</div><h1>每週週報</h1><p>主日程序、教會消息與代禱事項。</p></div></section>
   <main><div class="wrap"><div class="section-title"><span class="title-mark"></span>教會週報下載</div><table class="bulletin-table" id="bulletin-table"></table></div></main>
-  <footer><div class="wrap">台灣基督長老教會 聖望教會　・　Seng Wang Presbyterian Church, PCT</div></footer>
+  <footer><div class="wrap">台灣基督長老教會 聖望教會　・　Seng Wang Presbyterian Church, PCT　・　v<span id="app-version">…</span></div></footer>
   <script>
+    fetch('VERSION').then(res=>res.text()).then(v=>{document.getElementById('app-version').textContent=v.trim()}).catch(()=>{});
     function pad(n){return n<10?'0'+n:''+n}
     function fmtDate(d){return d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate())}
     function fmtFile(d){return 'data/weekly/'+d.getFullYear()+'/'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'.pdf'}
