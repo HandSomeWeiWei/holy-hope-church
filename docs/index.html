@@ -45,8 +45,8 @@
     <section class="daily-section"><div class="wrap"><a class="daily-reading" href="https://www.pct.org.tw/neweyes_daily.aspx" target="_blank" rel="noopener"><span>每日讀經</span><b>台灣基督長老教會新眼光讀經　↗</b></a></div></section>
     <section class="news"><div class="wrap news-card"><div><div class="eyebrow">CHURCH NEWS</div><h2>教會消息・每週週報</h2><p>下載最新週報，掌握主日程序、教會消息與代禱事項。</p></div><a class="button" href="epaper.html">查看每週週報　→</a></div></section>
   </main>
-  <footer><div class="wrap footer-grid"><div><strong>台灣基督長老教會 聖望教會</strong><p>Seng Wang Presbyterian Church, PCT　・　© 2026　・　v<span id="app-version">…</span></p></div><div class="footer-links"><a href="#about">認識聖望</a><a href="epaper.html">每週週報</a><a href="#visit">交通與聯絡</a><a href="https://www.facebook.com/profile.php?id=100070260430549" target="_blank" rel="noopener">Facebook</a></div></div></footer>
-  <script>fetch('VERSION').then(res=>res.text()).then(v=>{document.getElementById('app-version').textContent=v.trim()}).catch(()=>{});
+  <footer><div class="wrap footer-grid"><div><strong>台灣基督長老教會 聖望教會</strong><p>Seng Wang Presbyterian Church, PCT　・　© 2026</p></div><div class="footer-links"><a href="#about">認識聖望</a><a href="epaper.html">每週週報</a><a href="#visit">交通與聯絡</a><a href="https://www.facebook.com/profile.php?id=100070260430549" target="_blank" rel="noopener">Facebook</a></div></div></footer>
+  <script>
     const menu=document.querySelector('.menu'),links=document.querySelector('.links');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',open);menu.textContent=open?'×':'☰'});document.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰'}));
     document.querySelectorAll('.announce-body[data-src]').forEach(el=>{
       fetch(el.dataset.src).then(res=>{if(!res.ok)throw new Error('not ok');return res.text()}).then(text=>{
