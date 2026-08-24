@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="聖望教會每週週報下載。">
+  <title>每週週報｜聖望教會</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#34402f;--muted:#687064;--paper:#faf7ed;--green:#314b35;--leaf:#58704b;--gold:#a87542;--line:#e5dfcf}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.7}a{color:inherit;text-decoration:none}.wrap{width:min(940px,calc(100% - 40px));margin:auto}.top{background:var(--green);color:#fff}.nav{height:76px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;align-items:center;gap:10px;font:600 1.22rem "Noto Serif TC",serif}.mark{width:48px;height:48px;padding:2px;border:3px solid var(--green);border-radius:50%;background:var(--green);object-fit:cover;object-position:center}.back{font-size:.9rem;font-weight:700;color:#ebf0e4}.hero{padding:66px 0 54px;background:linear-gradient(135deg,#e9eadc,#d4dfc3)}.eyebrow{color:var(--gold);font-size:.78rem;letter-spacing:.16em;font-weight:700}.hero h1{font:600 clamp(2.25rem,5vw,3.8rem)/1.3 "Noto Serif TC",serif;margin:8px 0}.hero p{margin:0;color:var(--muted)}main{padding:56px 0 88px}.section-title{display:flex;align-items:center;gap:10px;font:600 1.3rem "Noto Serif TC",serif;margin:0 0 20px}.section-title .title-mark{width:13px;height:13px;background:var(--gold);flex:none}.bulletin-table{width:100%;border-collapse:collapse;border:1px solid var(--line);background:#fffdf7}.bulletin-table td{border:1px solid var(--line);padding:18px;text-align:center;width:50%}.bulletin-table a{display:inline-block;font:600 1.1rem "Noto Serif TC",serif;color:var(--green);letter-spacing:.04em}.bulletin-table a:hover{color:var(--gold)}.bulletin-table .pending{font:600 1.1rem "Noto Serif TC",serif;color:var(--muted)}.bulletin-table .pending-note{font-size:.72rem;font-weight:400;margin-top:3px;color:var(--gold)}footer{background:#17252e;color:#dce6e7;padding:28px 0;font-size:.82rem}@media(max-width:600px){.nav{height:68px}.hero{padding:50px 0 42px}.back{font-size:.8rem}.bulletin-table td{padding:14px}}
+  </style>
+</head>
+<body>
+  <header class="top"><nav class="nav wrap"><a class="brand" href="index.html"><img class="mark" src="assets/church-logo.png" alt="聖望教會 Logo">聖望教會</a><a class="back" href="index.html">← 回到首頁</a></nav></header>
+  <section class="hero"><div class="wrap"><div class="eyebrow">CHURCH NEWS</div><h1>每週週報</h1><p>主日程序、教會消息與代禱事項。</p></div></section>
+  <main><div class="wrap"><div class="section-title"><span class="title-mark"></span>教會週報下載</div><table class="bulletin-table" id="bulletin-table"></table></div></main>
+  <footer><div class="wrap">台灣基督長老教會 聖望教會　・　Seng Wang Presbyterian Church, PCT</div></footer>
+  <script>
+    function pad(n){return n<10?'0'+n:''+n}
+    function fmtDate(d){return d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate())}
+    function fmtFile(d){return 'data/weekly/'+d.getFullYear()+'/'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'.pdf'}
+
+    var today=new Date();
+    var thisSunday=new Date(today);
+    thisSunday.setDate(today.getDate()+(7-today.getDay())%7);
+
+    var weeks=[];
+    for(var i=0;i<8;i++){
+      var d=new Date(thisSunday);
+      d.setDate(thisSunday.getDate()-7*i);
+      weeks.push(d);
+    }
+
+    Promise.all(weeks.map(function(d){
+      var file=fmtFile(d);
+      return fetch(file,{method:'HEAD'}).then(function(res){return {date:d,file:file,ok:res.ok}}).catch(function(){return {date:d,file:file,ok:false}});
+    })).then(function(results){
+      var table=document.getElementById('bulletin-table');
+      for(var i=0;i<results.length;i+=2){
+        var tr=document.createElement('tr');
+        for(var j=i;j<i+2;j++){
+          var td=document.createElement('td');
+          var r=results[j];
+          if(r.ok){
+            var a=document.createElement('a');
+            a.href=r.file;
+            a.target='_blank';
+            a.rel='noopener';
+            a.textContent=fmtDate(r.date);
+            td.appendChild(a);
+          }else{
+            var box=document.createElement('div');
+            box.className='pending';
+            box.textContent=fmtDate(r.date);
+            if(j===0){
+              var note=document.createElement('div');
+              note.className='pending-note';
+              note.textContent='每週日可取得';
+              box.appendChild(note);
+            }
+            td.appendChild(box);
+          }
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+    });
+  </script>
+</body>
+</html>
